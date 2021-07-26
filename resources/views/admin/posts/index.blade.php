@@ -2,6 +2,8 @@
 
 @section('content')
     <div class="container">
+        <h1>Posts</h1>
+        <a class="btn btn-primary float-right" href="{{route('admin.posts.create')}}">Crea nuovo post</a>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -17,7 +19,9 @@
                         <td>{{$item->id}}</td>
                         <td>{{$item->title}}</td>
                         <td>{{$item->slug}}</td>
-                        <td>SHOW</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{route('admin.posts.show',$item->id)}}"><i class="fas fa-search"></i></a>
+                        </td>
                         <td>EDIT</td>
                         <td>DELETE</td>
                     </tr>
