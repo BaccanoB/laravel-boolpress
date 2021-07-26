@@ -9,6 +9,28 @@ use App\Post;
 
 class PostController extends Controller
 {
+
+    private $validationPosts = [
+        'title'=> 'required|max:225',
+        'body'=>'required'
+    ];
+
+    private function slugGenerate($data){
+
+        $slug = Str::slug($data['title'],'-');
+        $isInTabel = Post::where('slug',$slug)->first();
+
+        
+        $slugBase = $slug;
+        $counter = 1;
+
+        while($isInTabel) {
+            $slug = $slugBase . "-" . $counter;
+            $isInTabel = Post::where('slug',$slug)->first();
+            $counter++;
+        }
+        return $slug;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -40,30 +62,16 @@ class PostController extends Controller
     {
         $data = $request->all();
 
-        $request-> validate([
-            'title'=> 'required|max:225',
-            'content'=>'required'
-        ]);
+        $request-> validate($this->validationPosts);
 
         $newPost = new Post();
 
-        $slug = Str::slug($data['title'],'-');
-        $isInTabel = Post::where('slug',$slug)->first();
-
-        
-        $slugBase = $slug;
-        $counter = 1;
-
-        while($isInTabel) {
-            $slug = $slugBase . "-" . $counter;
-            $isInTabel = Post::where('slug',$slug)->first();
-            $counter++;
-        }
+        $slug = $this->slugGenerate($data);
 
         $data['slug'] = $slug;
         $newPost->fill($data);
         $newPost->save();
-        redirect()->route('admin.posts.show',$newPost->id);
+        return redirect()->route('admin.posts.show',$newPost->id);
     }
 
     /**
@@ -83,9 +91,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit',compact('post'));
     }
 
     /**
@@ -95,9 +103,18 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->all();
+        $request->validate($this->validationPosts);
+        if($post -> title !=$data['title']){
+            $slug = $this->slugGenerate($data);
+
+            $data['slug'] = $slug;
+        }
+
+        $post->update($data);
+        return redirect()->route('admin.posts.show', $post->id);
     }
 
     /**
@@ -106,8 +123,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()
+        ->route('admin.posts.index')
+        ->with('deleted', $post->title);
     }
 }
