@@ -13,6 +13,7 @@
                     <th>ID</th>
                     <th>TITOLO</th>
                     <th>SLUG</th>
+                    <th>CATEGORIA</th>
                     <th colspan="3">BOTTONI</th>
                 </tr>
             </thead>
@@ -22,6 +23,13 @@
                         <td>{{$item->id}}</td>
                         <td>{{$item->title}}</td>
                         <td>{{$item->slug}}</td>
+                        <td>
+                            @if ($item->category)
+                                {{$item->category->name}}                     
+                            @else
+                                Nessuna categoria
+                            @endif
+                        </td>
                         <td>
                             <a class="btn btn-primary" href="{{route('admin.posts.show',$item->id)}}"><i class="fas fa-search"></i></a>
                         </td>
