@@ -5,7 +5,7 @@
         <a class="btn btn-info" href="{{route('admin.posts.index')}}">Lista Post</a>
         <h1>{{$post->title}}
             @if ($post->category)
-                <span class="badge badge-primary">{{$post->category->name}}</span>
+                <a href="{{route('admin.categories.show',$post->category->id)}}" class="badge badge-primary">{{$post->category->name}}</a>
             @else
                 <span class="badge">Nessuna categoria selezionata</span>
             @endif
