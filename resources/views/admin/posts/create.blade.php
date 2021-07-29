@@ -32,6 +32,19 @@
                     <small class="text-danger">{{$message}}</small>
                 @enderror
             </div>
+            <div class="form-group">
+                <h6>Tags</h6>
+                @foreach ($tags as $tag)
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="tags[]" id="tag-{{$tag->id}}" value="{{$tag->id}}" {{in_array($tag->id,old('tags',[]))?'checked':''}}>
+                        <label class="form-check-input" for="tag-{{$tag->id}}">{{$tag->name}}</label>
+                    </div>
+                @endforeach
+                @error('tags')
+                    <small class="text-danger">{{$message}}</small>
+                @enderror
+                
+            </div>
             <button type="submit" class="btn btn-success" > Crea </button>
         </form>
     </div>

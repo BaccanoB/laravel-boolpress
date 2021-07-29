@@ -14,6 +14,7 @@
                     <th>TITOLO</th>
                     <th>SLUG</th>
                     <th>CATEGORIA</th>
+                    <th>TAGS</th>
                     <th colspan="3">BOTTONI</th>
                 </tr>
             </thead>
@@ -29,6 +30,11 @@
                             @else
                                 Nessuna categoria
                             @endif
+                        </td>
+                        <td>
+                            @foreach ($item->tags as $tag)
+                                {{$tag->name}}
+                            @endforeach
                         </td>
                         <td>
                             <a class="btn btn-primary" href="{{route('admin.posts.show',$item->id)}}"><i class="fas fa-search"></i></a>
