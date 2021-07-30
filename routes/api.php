@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/test', function() {
+    return response()->json(
+        [
+            'nome'=>'beatrice',
+            'cognome'=>'baccano',
+            'eta'=>'31'        ]
+    );
+}
+);
+Route::post('/rotta-post', function() {
+    return response()->json(
+        [
+            'nome'=>'beatrice',
+            'cognome'=>'baccano',
+            'eta'=>'31'        ]
+    );
+}
+);
+
+Route::namespace('Api')->group(function(){
+        Route::get('posts','PostController@index');
 });
