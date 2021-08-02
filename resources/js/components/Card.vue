@@ -5,7 +5,7 @@
                 <h3 class="card-title">{{item.title}}</h3>
                 
                 <span>{{item.excerpt}}</span>
-                <!-- <p>{{reducedText(item.excerpt)}}</p> -->
+                <router-link :to="{ name: 'single-post', params: { slug: item.slug } }">Leggi</router-link>
             </div>
         </div> 
     </div>
