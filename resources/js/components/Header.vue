@@ -33,6 +33,12 @@ export default {
 
         a {
             text-decoration: none;
+
+            &.active,
+            &:hover {
+                background-color: lightblue;
+                padding: 5px;
+            }
         }
     }
     

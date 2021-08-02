@@ -73,6 +73,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang='scss' scoped>
+    .container {
+        margin-left: 30px;
+    }
+    button {
+        margin: 5px 5px 5px 15px;
+    }
 </style>

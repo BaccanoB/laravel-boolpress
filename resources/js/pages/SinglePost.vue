@@ -3,6 +3,10 @@
     <div class="container">
         <h1>{{post.title}}</h1>
         <p>{{post.body}}</p>
+        <h4 class=" badge badge-primary" v-if="post.category">{{post.category.name}}</h4>
+        <div class="h5" v-if="post.tags.length > 0">
+            <h4 class="badge badge-warning" v-for="tag in post.tags" :key="`tag-${tag.id}`">{{tag.name}}</h4>
+        </div>
         <router-link :to="{ name: 'blog'}">Torna al Blog</router-link>
     </div>
 </template>
@@ -33,5 +37,7 @@ export default {
 </script>
 
 <style scoped>
-
+    a {
+        display: block;
+    }
 </style>
