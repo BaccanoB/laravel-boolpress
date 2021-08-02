@@ -2106,6 +2106,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Blog',
@@ -2114,7 +2123,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      posts: []
+      posts: [],
+      current_page: 1,
+      last_page: 1
     };
   },
   methods: {
@@ -2131,9 +2142,12 @@ __webpack_require__.r(__webpack_exports__);
     getPosts: function getPosts() {
       var _this = this;
 
-      axios.get('http://127.0.0.1:8000/api/posts').then(function (res) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("http://127.0.0.1:8000/api/posts?page=".concat(page)).then(function (res) {
         //  console.log(res.data);
-        _this.posts = res.data.posts;
+        _this.posts = res.data.data;
+        _this.current_page = res.data.current_page;
+        _this.last_page = res.data.last_page;
 
         _this.posts.forEach(function (element) {
           element.excerpt = _this.reducedText(element.body, 150);
@@ -3596,10 +3610,80 @@ var render = function() {
     _c(
       "div",
       { staticClass: "row" },
-      _vm._l(_vm.posts, function(post) {
-        return _c("Card", { key: post.id, attrs: { item: post } })
-      }),
-      1
+      [
+        _vm._l(_vm.posts, function(post) {
+          return _c("Card", { key: post.id, attrs: { item: post } })
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-center mb-4" }, [
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.current_page > 1,
+                  expression: "current_page>1"
+                }
+              ],
+              staticClass: "btn btn-info",
+              on: {
+                click: function($event) {
+                  return _vm.getPosts(_vm.current_page - 1)
+                }
+              }
+            },
+            [_vm._v("Previous")]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "text-center mb-4" },
+          _vm._l(_vm.last_page, function(n) {
+            return _c(
+              "button",
+              {
+                key: n,
+                staticClass: "btn btn-info",
+                class: n == _vm.current_page ? "btn-primary" : "btn-info",
+                on: {
+                  click: function($event) {
+                    return _vm.getPosts(n)
+                  }
+                }
+              },
+              [_vm._v(_vm._s(n))]
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-center mb-4" }, [
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.current_page < _vm.last_page,
+                  expression: "current_page<last_page"
+                }
+              ],
+              staticClass: "btn btn-info",
+              on: {
+                click: function($event) {
+                  return _vm.getPosts(_vm.current_page + 1)
+                }
+              }
+            },
+            [_vm._v("Next")]
+          )
+        ])
+      ],
+      2
     )
   ])
 }
@@ -19338,6 +19422,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 var app = new Vue({

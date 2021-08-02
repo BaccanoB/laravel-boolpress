@@ -9,14 +9,17 @@ use App\Post;
 class PostController extends Controller
 {
     public function index() {
-        $posts = Post::all();
+        
+        $posts = Post::paginate(3);
 
-        $result = [
-            'success'=>true,
-            'posts'=>$posts
-        ];
+        // $posts = Post::all();
 
-        return response()->json($result);
+        // $result = [
+        //     'success'=>true,
+        //     'posts'=>$posts
+        // ];
+
+        return response()->json($posts);
     }
 
     public function show($slug){
